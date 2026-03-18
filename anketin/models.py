@@ -4,7 +4,17 @@ from django.db import models
 from django.utils import timezone
 
 class Soru(models.Model):
+    KATEGORI_SECIMLERI = [
+        ('Spor', 'Spor'),
+        ('Teknoloji', 'Teknoloji'),
+        ('Finans', 'Finans'),
+        ('Oyun', 'Oyun'),
+        ('Gündem', 'Gündem'),
+        ('Sinema', 'Sinema'),
+        ('Diğer', 'Diğer'),
+    ]
     soru_metni = models.CharField(max_length=200)
+    kategori = models.CharField(max_length=20, choices=KATEGORI_SECIMLERI, default='Diğer')
     yayinlanma_tarihi = models.DateTimeField("Yayımlanma Tarihi")
 
     def __str__(self):

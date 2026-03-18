@@ -30,6 +30,20 @@
                     style="width: 100%; padding: 1.25rem 1.5rem; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; color: #f8fafc; font-size: 1.1rem; font-family: 'Outfit', sans-serif; box-sizing: border-box; outline: none; transition: border-color 0.3s ease;">
             </div>
 
+            <div style="margin-bottom: 2rem; position: relative;">
+                <label for="kategori" style="display: block; color: #cbd5e1; font-weight: 500; font-size: 1.1rem; margin-bottom: 0.75rem;">Kategori</label>
+                <select id="kategori" name="kategori" required
+                    style="width: 100%; padding: 1.25rem 1.5rem; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; color: #f8fafc; font-size: 1.1rem; font-family: 'Outfit', sans-serif; box-sizing: border-box; outline: none; transition: auto; appearance: none; -webkit-appearance: none; cursor: pointer;">
+                    {% for kat in kategoriler %}
+                        <option value="{{ kat }}" style="background: #0f172a; color: #f8fafc;">{{ kat }}</option>
+                    {% endfor %}
+                </select>
+                <!-- Custom Arrow for Select -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 1.5rem; top: 3.2rem; pointer-events: none;">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+
             <div id="secenekler-container" style="margin-bottom: 1.5rem;">
                 <label style="display: block; color: #cbd5e1; font-weight: 500; font-size: 1.1rem; margin-bottom: 0.75rem;">Seçenekler</label>
                 

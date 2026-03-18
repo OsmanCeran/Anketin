@@ -1,0 +1,58 @@
+{% extends 'anketin/base.html' %}
+
+{% block title %}Kategorilere Göre Anketler - Anketin{% endblock %}
+
+{% block content %}
+<div class="poll-list-wrapper">
+    <div class="poll-header">
+        <h1>Kategoriler ve Anketler</h1>
+        <p>İlginizi çeken alandaki anketlere kolayca katılıp fikrinizi belirtebilirsiniz.</p>
+    </div>
+
+    {% for kategori_adi, anketler in kategoriler_sozlugu.items %}
+    <section class="page-section" style="margin: 3rem auto; padding: 0;">
+        <div class="section-header" style="margin-bottom: 2rem; text-align: left;">
+            <h2 style="color: #A9BF3C; font-size: 1.8rem; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                📋 {{ kategori_adi }} Anketleri
+            </h2>
+        </div>
+        <div class="poll-grid">
+            {% for soru in anketler %}
+            <a href="/anketin/{{ soru.id }}/" class="poll-card">
+                <div class="poll-card-content">
+                    <div class="poll-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16h16v-8M14 2v6h6M16 13H8M16 17H8M10 9H8"></path>
+                        </svg>
+                    </div>
+                    <h3>{{ soru.soru_metni }}</h3>
+                </div>
+                <div class="poll-card-footer">
+                    <span>Ankete Katıl</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% empty %}
+    <div class="empty-state-wrapper">
+        <div class="empty-state-content">
+            <div class="icon-pulse-effect">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M8 15h8"></path>
+                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                </svg>
+            </div>
+            <h2>Henüz Anket Yok</h2>
+            <p>Şu an için oluşturulmuş anket bulunmuyor.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

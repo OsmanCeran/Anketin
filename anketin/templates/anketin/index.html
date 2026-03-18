@@ -5,7 +5,6 @@
     <div id="landing-section" class="landing-wrapper">
         <div class="landing-content">
             <div class="icon-pulse-effect" style="margin-bottom: 2rem;">
-                <!-- Sohbet/Oylama İkonu -->
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#A9BF3C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     <line x1="9" y1="9" x2="15" y2="9"></line>
@@ -14,45 +13,127 @@
             </div>
             <h1>Anketin'e Hoş Geldiniz</h1>
             <p>Fikirlerinizi özgürce ifade edin, güncel oylamalara katılın ve topluluğun nabzını tutun. Karar vermekte zorlandığınız konularda topluluğa sorarak doğru yolu bulun.</p>
-            <button id="show-polls-btn" class="submit-vote-btn" style="width: auto; padding: 1rem 2.5rem; margin-top: 1.5rem; display: inline-flex;">
-                Anketleri Görüntüle
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00303F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </button>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'anketin:anketler' %}" class="submit-vote-btn" style="width: auto; padding: 1rem 2.5rem; display: inline-flex; text-decoration: none;">
+                    Anketleri Görüntüle
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00303F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+                <a href="{% url 'anketin:anket_ekle' %}" class="outline-btn" style="width: auto; padding: 1rem 2.5rem;">
+                    Hemen Anket Oluştur
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- ANKET İÇERİKLERİ (İlk başta gizli) -->
-    <div id="main-content" style="display: none; width: 100%; flex-direction: column; align-items: center;">
-    {% if son_sorular %}
-        <div class="poll-list-wrapper">
-            <div class="poll-header">
-                <h1>Güncel Anketler</h1>
-                <p>Katılmak istediğiniz anketi seçip hemen oy verebilirsiniz.</p>
+    <!-- YENİ: NASIL ÇALIŞIR? BÖLÜMÜ -->
+    <section id="nasil-calisir" class="page-section">
+        <div class="section-header">
+            <h2>Nasıl Çalışır?</h2>
+            <p>Siz de 3 kolay adımda anketinizi oluşturup sonuçları analiz etmeye başlayabilirsiniz.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon-circle">📝</div>
+                <h3>1. Konunu Seç</h3>
+                <p>Merak ettiğiniz veya kararsız kaldığınız herhangi bir soruyu ve seçenekleri belirleyin.</p>
             </div>
-            <div class="poll-grid">
-                {% for soru in son_sorular %}
-                <a href="/anketin/{{ soru.id }}/" class="poll-card">
-                    <div class="poll-card-content">
-                        <div class="poll-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16h16v-8M14 2v6h6M16 13H8M16 17H8M10 9H8"></path>
-                            </svg>
-                        </div>
-                        <h3>{{ soru.soru_metni }}</h3>
-                    </div>
-                    <div class="poll-card-footer">
-                        <span>Ankete Katıl</span>
+            <div class="feature-card">
+                <div class="feature-icon-circle">🔗</div>
+                <h3>2. Anketini Paylaş</h3>
+                <p>Oluşturduğunuz anketi topluluğa açarak veya arkadaşlarınızla paylaşarak oy toplamaya başlayın.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-circle">📊</div>
+                <h3>3. Grafikleri İncele</h3>
+                <p>Sonuçları anlık olarak Chart.js destekli interaktif grafiklerle raporlar üzerinden analiz edin.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- YENİ: KATEGORİLER BÖLÜMÜ -->
+    <section id="kategoriler" class="page-section">
+        <div class="section-header">
+            <h2>Kategoriler</h2>
+            <p>İlginizi çeken alanlardaki popüler konuları keşfedin (Çok Yakında!).</p>
+        </div>
+        <div class="category-badges">
+            <span class="category-badge">⚽ Spor</span>
+            <span class="category-badge">💻 Teknoloji</span>
+            <span class="category-badge">📈 Finans</span>
+            <span class="category-badge">🎮 Oyun</span>
+            <span class="category-badge">📰 Gündem</span>
+            <span class="category-badge">🎵 Müzik</span>
+            <span class="category-badge">🎬 Sinema</span>
+        </div>
+    </section>
+
+    <!-- YENİ: TREND ANKETLER BÖLÜMÜ -->
+    {% if trend_sorular %}
+    <section id="trend-anketler" class="page-section">
+        <div class="section-header">
+            <h2>🔥 Öne Çıkan / Trend Anketler</h2>
+            <p>Şu anda topluluğun en çok oy kullandığı ve etkileşim alan oylamalar.</p>
+        </div>
+        <div class="poll-grid">
+            {% for soru in trend_sorular %}
+            <a href="/anketin/{{ soru.id }}/" class="poll-card trend-card">
+                <div class="poll-card-content">
+                    <div class="poll-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
                         </svg>
                     </div>
-                </a>
-                {% endfor %}
-            </div>
+                    <h3>{{ soru.soru_metni }}</h3>
+                </div>
+                <div class="poll-card-footer">
+                    <span>{{ soru.toplam_oy|default:"0" }} Toplam Oy</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- MEVCUT: GÜNCEL ANKETLER -->
+    <section id="main-content" class="page-section">
+    {% if son_sorular %}
+        <div class="section-header">
+            <h2>🕒 Güncel Anketler</h2>
+            <p>Sisteme yeni eklenen anketlere ilk oy veren siz olun.</p>
+        </div>
+        <div class="poll-grid">
+            {% for soru in son_sorular %}
+            <a href="/anketin/{{ soru.id }}/" class="poll-card">
+                <div class="poll-card-content">
+                    <div class="poll-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16h16v-8M14 2v6h6M16 13H8M16 17H8M10 9H8"></path>
+                        </svg>
+                    </div>
+                    <h3>{{ soru.soru_metni }}</h3>
+                </div>
+                <div class="poll-card-footer">
+                    <span>Ankete Katıl</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
+            {% endfor %}
         </div>
     {% else %}
         <div class="empty-state-wrapper">
@@ -70,26 +151,19 @@
             </div>
         </div>
     {% endif %}
-    </div>
+    </section>
 {% endblock %}
 
 {% block extra_scripts %}
     <script>
-        document.getElementById('show-polls-btn').addEventListener('click', function() {
-            var landing = document.getElementById('landing-section');
-            var mainContent = document.getElementById('main-content');
-            
-            // Yumuşak kaybolma efekti
-            landing.style.opacity = '0';
-            landing.style.transition = 'opacity 0.4s ease';
-            
-            setTimeout(function() {
-                landing.style.display = 'none';
-                mainContent.style.display = 'flex';
-                mainContent.style.flexDirection = 'column';
-                mainContent.style.alignItems = 'center';
-                mainContent.classList.add('fade-in');
-            }, 400);
+        // Smooth scrolling için opsiyonel Vanilla JS
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
     </script>
 {% endblock %}

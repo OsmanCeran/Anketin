@@ -1,0 +1,107 @@
+{% extends 'anketin/base.html' %}
+
+{% block title %}Grafik: {{ soru.soru_metni }} - Anketin{% endblock %}
+
+{% block content %}
+<div class="poll-detail-wrapper" style="max-width: 800px;">
+    <a href="{% url 'anketin:grafikler' %}" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Grafiklere Dön
+    </a>
+
+    <div class="poll-detail-card" style="display: flex; flex-direction: column; align-items: center;">
+        <h1 style="margin-bottom: 3rem; text-align: center; color: #38bdf8;">{{ soru.soru_metni }}</h1>
+        
+        <div style="width: 100%; max-width: 450px; position: relative;">
+            <canvas id="pollChart"></canvas>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 3rem;">
+            <a href="{% url 'anketin:detail' soru.id %}" class="outline-btn" style="text-decoration: none; font-size: 1rem; padding: 0.8rem 1.5rem;">
+                Ankete Oy Ver
+            </a>
+            <a href="{% url 'anketin:results' soru.id %}" class="submit-vote-btn" style="text-decoration: none; font-size: 1rem; padding: 0.8rem 1.5rem;">
+                Detaylı Sonuçlar
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('pollChart').getContext('2d');
+        
+        const labels = [
+            {% for secenek in soru.secenek_set.all %}
+                "{{ secenek.secenek_metni|escapejs }}"{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+        
+        const data = [
+            {% for secenek in soru.secenek_set.all %}
+                {{ secenek.oylar }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        // Temaya uygun renk paleti
+        const backgroundColors = [
+            '#A9BF3C', '#64748b', '#cbd5e1', '#38bdf8', '#fbbf24', '#f87171'
+        ];
+
+        new Chart(ctx, {
+            type: 'doughnut', // 'pie' yerine 'doughnut' modern bir görünüm katar
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 0,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: '60%', // Doughnut kalınlığı
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#cbd5e1',
+                            padding: 20,
+                            font: {
+                                family: "'Outfit', sans-serif",
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleFont: { family: "'Outfit', sans-serif", size: 14 },
+                        bodyFont: { family: "'Outfit', sans-serif", size: 14 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + ' Oy';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

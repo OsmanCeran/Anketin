@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Anketin - Anketler{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'anketin/style.css' %}?v={{ request.ctime|default:'10' }}">
+    <link rel="stylesheet" href="{% static 'anketin/style.css' %}?v={{ request.ctime|default:'12' }}">
     <!-- Chart.js Kütüphanesi -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -27,7 +27,7 @@
             </a>
             <div class="nav-links">
                 <a href="{% url 'anketin:index' %}">Anasayfa</a>
-                <a href="{% url 'anketin:index' %}#main-content" onclick="document.getElementById('landing-section').style.display='none'; document.getElementById('main-content').style.display='flex';">Anketler</a>
+                <a href="{% url 'anketin:anketler' %}">Anketler</a>
                 <a href="{% url 'anketin:grafikler' %}">Grafikler</a>
                 <a href="{% url 'anketin:anket_ekle' %}" style="color: #A9BF3C; font-weight: 600;">+ Anket Ekle</a>
             </div>

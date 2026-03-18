@@ -568,6 +568,43 @@ body {
     transform: translateY(1px);
 }
 
+/* Secondary CTA - Outline Button */
+.outline-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: transparent;
+    color: #A9BF3C; /* Accent color text */
+    border: 2px solid #A9BF3C; /* Accent color border */
+    padding: 1.05rem; /* Adjusted for border width */
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.outline-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.outline-btn:hover {
+    background: rgba(169, 191, 60, 0.1); /* Subtle fill on hover */
+    box-shadow: 0 4px 15px rgba(169, 191, 60, 0.2);
+    transform: translateY(-2px);
+}
+
+.outline-btn:hover svg {
+    transform: scale(1.1); /* Slightly pop the icon */
+}
+
+.outline-btn:active {
+    transform: translateY(1px);
+}
+
 /* --- Landing Page Styling --- */
 .landing-wrapper {
     display: flex;
@@ -618,4 +655,117 @@ body {
 @keyframes fadeInAnimation {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- YENİ BÖLÜMLER (SCROLL İÇİN) --- */
+.page-section {
+    width: 100%;
+    max-width: 1000px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #f8fafc;
+    margin: 0 0 0.5rem 0;
+}
+
+.section-header p {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* Nasıl Çalışır? (Features Grid) */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: rgba(169, 191, 60, 0.3);
+}
+
+.feature-icon-circle {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1.5rem auto;
+    background: rgba(169, 191, 60, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #A9BF3C;
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    color: #f8fafc;
+    margin: 0 0 1rem 0;
+}
+
+.feature-card p {
+    font-size: 1rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Kategoriler (Badges) */
+.category-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.category-badge {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    color: #cbd5e1;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-badge:hover {
+    background: #A9BF3C;
+    color: #00303F;
+    border-color: #A9BF3C;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(169, 191, 60, 0.2);
+}
+
+/* Trend Anketler (Highlight) */
+.trend-card {
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.trend-card:hover {
+    border-color: rgba(239, 68, 68, 0.6);
+    box-shadow: 0 12px 20px -5px rgba(239, 68, 68, 0.2);
 }

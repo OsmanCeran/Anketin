@@ -6,88 +6,34 @@
 <div class="poll-list-wrapper">
     <div class="poll-header">
         <h1>Anket Sonuçları & Grafikler</h1>
-        <p>Tüm anketlerin oy dağılımını dairesel (pie) grafiklerle detaylı olarak inceleyin.</p>
+        <p>Oy dağılımlarını şemalar halinde incelemek istediğiniz anketi seçin.</p>
     </div>
 
-    <div class="grafikler-container" style="display: flex; flex-direction: column; gap: 3rem; align-items: center; width: 100%;">
+    <div class="poll-grid">
         {% for soru in sorular %}
-            <div class="poll-detail-card" style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center;">
-                <h3 style="color: #f8fafc; font-size: 1.3rem; margin-bottom: 2rem; text-align: center;">{{ soru.soru_metni }}</h3>
-                
-                <div style="width: 100%; max-width: 350px; position: relative;">
-                    <canvas id="chart_{{ soru.id }}"></canvas>
+        <a href="{% url 'anketin:grafik_detay' soru.id %}" class="poll-card">
+            <div class="poll-card-content">
+                <div class="poll-icon" style="background: rgba(56, 189, 248, 0.1); color: #38bdf8;">
+                    <!-- Pie Chart Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                    </svg>
                 </div>
-                
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const ctx_{{ soru.id }} = document.getElementById('chart_{{ soru.id }}').getContext('2d');
-                        
-                        // Veriler Django template tarafından sağlanıyor
-                        const labels_{{ soru.id }} = [
-                            {% for secenek in soru.secenek_set.all %}
-                                "{{ secenek.secenek_metni|escapejs }}"{% if not forloop.last %},{% endif %}
-                            {% endfor %}
-                        ];
-                        
-                        const data_{{ soru.id }} = [
-                            {% for secenek in soru.secenek_set.all %}
-                                {{ secenek.oylar }}{% if not forloop.last %},{% endif %}
-                            {% endfor %}
-                        ];
-
-                        // Renk paleti oluştur (özel renklere uyumlu)
-                        const backgroundColors = [
-                            '#A9BF3C', '#64748b', '#cbd5e1', '#38bdf8', '#fbbf24', '#f87171'
-                        ];
-
-                        new Chart(ctx_{{ soru.id }}, {
-                            type: 'pie', // Dairesel grafik
-                            data: {
-                                labels: labels_{{ soru.id }},
-                                datasets: [{
-                                    data: data_{{ soru.id }},
-                                    backgroundColor: backgroundColors,
-                                    borderWidth: 0,
-                                    hoverOffset: 6
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            color: '#cbd5e1',
-                                            padding: 20,
-                                            font: {
-                                                family: "'Outfit', sans-serif",
-                                                size: 14
-                                            }
-                                        }
-                                    },
-                                    tooltip: {
-                                        callbacks: {
-                                            label: function(context) {
-                                                let label = context.label || '';
-                                                if (label) {
-                                                    label += ': ';
-                                                }
-                                                if (context.parsed !== null) {
-                                                    label += context.parsed + ' Oy';
-                                                }
-                                                return label;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    });
-                </script>
+                <h3>{{ soru.soru_metni }}</h3>
             </div>
+            <div class="poll-card-footer">
+                <span>Grafiği Görüntüle</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </div>
+        </a>
         {% empty %}
-            <div class="empty-state-content" style="box-shadow: none; background: transparent; border: none;">
-                <p style="color: #94a3b8; font-size: 1.1rem;">Henüz grafik oluşturulacak bir anket veya oy bulunamadı.</p>
+            <div class="empty-state-wrapper" style="grid-column: 1 / -1;">
+                <div class="empty-state-content">
+                    <h2>Henüz Anket Yok</h2>
+                </div>
             </div>
         {% endfor %}
     </div>
