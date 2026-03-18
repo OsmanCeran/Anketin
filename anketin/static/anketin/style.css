@@ -46,17 +46,46 @@ body {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: #A9BF3C;
-    font-size: 1.5rem;
-    font-weight: 700;
     text-decoration: none;
-    letter-spacing: 0.5px;
-    text-shadow: 0 2px 10px rgba(169, 191, 60, 0.2);
 }
 
-.nav-logo svg {
-    width: 28px;
-    height: 28px;
+.logo-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #A9BF3C;
+    color: #00303F;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(169, 191, 60, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-logo:hover .logo-icon-wrapper {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(169, 191, 60, 0.6);
+}
+
+.logo-icon-wrapper svg {
+    width: 24px;
+    height: 24px;
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: transparent;
+    -webkit-text-stroke: 1.5px #A9BF3C;
+    text-shadow: 0 0 10px rgba(169, 191, 60, 0.2);
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.nav-logo:hover .logo-text {
+    color: #A9BF3C;
+    -webkit-text-stroke: 0px transparent;
 }
 
 .nav-links {
