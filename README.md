@@ -14,8 +14,8 @@ Projeyi kendi bilgisayarınızda (localhost) denemek için aşağıdaki adımlar
 
 1. **Projeyi Bilgisayarınıza İndirin:**
    ```bash
-   git clone https://github.com/OsmanCeran/Anketix.git
-   cd Anketix
+   git clone https://github.com/OsmanCeran/Anketin.git
+   cd Anketin
    ```
 
 2. **Gereksinimleri Yükleyin:**
