@@ -1,0 +1,217 @@
+{% extends 'anketin/base.html' %}
+
+{% block title %}Admin Paneli | Anketin{% endblock %}
+
+{% block content %}
+<div class="poll-list-wrapper fade-in" style="max-width: 1200px; padding: 2rem 1rem;">
+    <!-- Modern Admin Dashboard Header -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; padding-bottom: 1.5rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--border-glass); gap: 1rem;">
+        <div style="text-align: left;">
+            <h1 style="color: var(--color-primary); margin: 0 0 0.5rem 0; font-size: 2.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem; text-shadow: 0 2px 10px rgba(6, 182, 212, 0.2);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-danger); filter: drop-shadow(0 2px 8px rgba(239, 68, 68, 0.4));"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Yönetim Merkezi
+            </h1>
+            <p style="color: var(--text-secondary); margin: 0; font-size: 1.1rem; font-weight: 400;">Sistem metriklerini izleyin ve tüm anketleri toplu olarak yönetin.</p>
+        </div>
+        <div style="text-align: right; color: var(--text-secondary); font-size: 0.95rem;">
+            <a href="{% url 'anketin:index' %}" class="outline-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; padding: 0.6rem 1.2rem; margin-bottom: 0.75rem; font-size: 0.9rem; border-color: var(--border-glass); background: rgba(30, 58, 138, 0.1);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Siteyi Görüntüle
+            </a>
+            <br>
+            Yetkili: <strong style="color: var(--text-primary); font-weight: 600;">{{ request.user.username }}</strong>
+        </div>
+    </div>
+
+    <!-- Sistem Metrikleri (Glassmorphic Grid) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3.5rem;">
+        
+        <div class="poll-card" style="border-left: 4px solid var(--color-primary); padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1.5rem; background: rgba(255, 255, 255, 0.03);">
+            <div class="poll-icon" style="background: rgba(6, 182, 212, 0.15); color: var(--color-primary); width: 64px; height: 64px; font-size: 1.8rem; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.2);">
+                📋
+            </div>
+            <div>
+                <h3 style="color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 0.25rem 0; font-weight: 600;">Toplam Anket</h3>
+                <p style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.1;">{{ total_polls }}</p>
+            </div>
+        </div>
+
+        <div class="poll-card" style="border-left: 4px solid #60A5FA; padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1.5rem; background: rgba(255, 255, 255, 0.03);">
+            <div class="poll-icon" style="background: rgba(96, 165, 250, 0.15); color: #60A5FA; width: 64px; height: 64px; font-size: 1.8rem; box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);">
+                👥
+            </div>
+            <div>
+                <h3 style="color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 0.25rem 0; font-weight: 600;">Kayıtlı Kullanıcı</h3>
+                <p style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.1;">{{ active_users }}</p>
+            </div>
+        </div>
+
+        <div class="poll-card" style="border-left: 4px solid var(--color-success); padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1.5rem; background: rgba(255, 255, 255, 0.03);">
+            <div class="poll-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--color-success); width: 64px; height: 64px; font-size: 1.8rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);">
+                ⚡
+            </div>
+            <div>
+                <h3 style="color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 0.25rem 0; font-weight: 600;">Toplam Oy</h3>
+                <p style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1.1;">{{ recent_votes }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Anket Yönetim Tablosu -->
+    <form method="POST" action="{% url 'anketin:admin_dashboard' %}">
+        {% csrf_token %}
+        <div class="poll-detail-card" style="padding: 0; overflow: hidden; border-radius: 16px; border: 1px solid var(--border-glass); background: rgba(255, 255, 255, 0.02); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);">
+            
+            <div style="background: var(--bg-surface); padding: 1.5rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass);">
+                <h2 style="font-size: 1.35rem; color: var(--text-primary); margin: 0; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--color-primary);">■</span> Tüm Anketler
+                </h2>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 5px;">
+                    <!-- Aksiyon Barı -->
+                    <button type="submit" name="action" value="bulk_deactivate" class="outline-btn" style="padding: 0.6rem 1.2rem; font-size: 0.9rem; border-color: #f59e0b; color: #f59e0b; background: rgba(245, 158, 11, 0.1);" onclick="return confirm('Seçilen anketleri pasife almak (tarihlerini ileri atmak) istediğinize emin misiniz?');">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: -4px;"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+                        Pasife Al
+                    </button>
+                    <button type="submit" name="action" value="bulk_delete" class="submit-vote-btn" style="padding: 0.6rem 1.2rem; font-size: 0.9rem; background: var(--color-danger); width: auto; color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);" onclick="return confirm('DİKKAT! Seçilen anketleri kalıcı olarak silmek istediğinize emin misiniz?');">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: -4px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        Sil
+                    </button>
+                </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead style="background: rgba(30, 58, 138, 0.15); border-bottom: 2px solid var(--border-glass);">
+                        <tr>
+                            <th style="padding: 1.25rem 1.5rem; width: 50px; text-align: center;">
+                                <input type="checkbox" id="selectAll" style="accent-color: var(--color-danger); transform: scale(1.3); cursor: pointer;">
+                            </th>
+                            <th style="padding: 1.25rem 1.5rem; color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">ID</th>
+                            <th style="padding: 1.25rem 1.5rem; color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Anket Sorusu</th>
+                            <th style="padding: 1.25rem 1.5rem; color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Kategori</th>
+                            <th style="padding: 1.25rem 1.5rem; color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Tarih</th>
+                            <th style="padding: 1.25rem 1.5rem; color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; text-align: right;">Eylemler</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-primary);">
+                        {% for soru in all_polls %}
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.2s ease;" onmouseover="this.style.background='rgba(30, 58, 138, 0.1)'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 1.25rem 1.5rem; text-align: center;">
+                                <input type="checkbox" name="poll_ids" value="{{ soru.id }}" class="poll-checkbox" style="accent-color: var(--color-primary); transform: scale(1.3); cursor: pointer;">
+                            </td>
+                            <td style="padding: 1.25rem 1.5rem; color: var(--text-secondary); font-size: 0.95rem; font-weight: 500;">#{{ soru.id }}</td>
+                            <td style="padding: 1.25rem 1.5rem; font-weight: 500; font-size: 1rem; color: var(--text-primary);">
+                                {{ soru.soru_metni }}
+                                {% if soru.yayinlanma_tarihi.year > 2030 %}
+                                    <span style="background: rgba(245, 158, 11, 0.2); color: #fcd34d; font-size: 0.75rem; padding: 3px 8px; border-radius: 6px; margin-left: 10px; font-weight: 600; border: 1px solid rgba(245, 158, 11, 0.4);">Pasif</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1.25rem 1.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                                {% if soru.kategori %}
+                                    <span style="background: rgba(6, 182, 212, 0.1); color: var(--color-primary); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; border: 1px solid rgba(6, 182, 212, 0.2);">{{ soru.kategori }}</span>
+                                {% else %}
+                                    <span style="color: var(--text-secondary);">-</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1.25rem 1.5rem; color: var(--text-secondary); font-size: 0.95rem;">
+                                {% if soru.yayinlanma_tarihi.year > 2030 %}
+                                    <span style="color: #f59e0b; font-style: italic;">Yayından Kaldırıldı</span>
+                                {% else %}
+                                    {{ soru.yayinlanma_tarihi|date:"d M Y" }}
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                                <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                                    <a href="{% url 'anketin:results' soru.id %}" title="Sonuçlara Git" style="background: rgba(16, 185, 129, 0.15); color: var(--color-success); padding: 8px; border-radius: 8px; transition: all 0.2s ease; border: 1px solid transparent;" onmouseover="this.style.background='rgba(16, 185, 129, 0.25)'; this.style.borderColor='rgba(16, 185, 129, 0.4)';" onmouseout="this.style.background='rgba(16, 185, 129, 0.15)'; this.style.borderColor='transparent';">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="padding: 4rem 2rem; text-align: center;">
+                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-secondary);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1rem; opacity: 0.5;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                    <p style="font-size: 1.1rem; font-weight: 500; margin: 0;">Sistemde henüz anket bulunmamaktadır.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('selectAll').addEventListener('change', function(e) {
+        var checkboxes = document.querySelectorAll('.poll-checkbox');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = e.target.checked;
+        }
+    });
+
+    // --- Güvenlik: 30 Dakika Hareketsizlik Kontrolü (Idle Timeout) ---
+    let idleTime = 0;
+    const maxIdleTime = 30 * 60; // 30 Dakika = 1800 Saniye
+    const warningTime = 29 * 60; // 29. Dakikada uyarı
+
+    function resetTimer() {
+        idleTime = 0;
+        hideWarning();
+    }
+
+    // Kullanıcı aktivitelerini dinle
+    window.onload = resetTimer;
+    window.onmousemove = resetTimer;
+    window.onmousedown = resetTimer;
+    window.ontouchstart = resetTimer;
+    window.onclick = resetTimer;
+    window.onkeydown = resetTimer;
+    window.addEventListener('scroll', resetTimer, true);
+
+    const checkIdleInterval = setInterval(function() {
+        idleTime = idleTime + 1;
+        
+        // Timeout: Otomatik Çıkış
+        if (idleTime >= maxIdleTime) {
+            clearInterval(checkIdleInterval);
+            window.location.href = "{% url 'anketin:logout' %}";
+        }
+        
+        // Son 1 dakikada uyarı göster
+        if (idleTime >= warningTime) {
+            showWarning();
+        }
+    }, 1000);
+
+    function showWarning() {
+        let warningEl = document.getElementById('idle-warning');
+        if (!warningEl) {
+            warningEl = document.createElement('div');
+            warningEl.id = 'idle-warning';
+            warningEl.innerHTML = `
+                <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(239, 68, 68, 0.95); backdrop-filter: blur(10px); color: white; padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4); z-index: 9999; animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 0.75rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <div>
+                        <strong style="display: block; font-size: 1.05rem; margin-bottom: 2px;">Dikkat!</strong>
+                        <span style="font-size: 0.95rem; opacity: 0.9;">Hareketsizlik nedeniyle oturumunuz 1 dakika içinde kapatılacaktır.</span>
+                    </div>
+                </div>
+                <style>
+                    @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+                </style>
+            `;
+            document.body.appendChild(warningEl);
+        }
+    }
+
+    function hideWarning() {
+        const warningEl = document.getElementById('idle-warning');
+        if (warningEl) warningEl.remove();
+    }
+</script>
+{% endblock %}

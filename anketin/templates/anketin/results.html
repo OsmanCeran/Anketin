@@ -13,13 +13,13 @@
     </a>
 
     <div class="poll-detail-card" style="text-align: center;">
-        <h1 style="margin-bottom: 2.5rem; font-size: 2rem;">{{ soru.soru_metni }} - <span style="color: #cbd5e1; font-weight: 300;">Sonuçlar</span></h1>
+        <h1 style="margin-bottom: 2.5rem; font-size: 2rem;">{{ soru.soru_metni }} - <span style="color: var(--text-secondary); font-weight: 300;">Sonuçlar</span></h1>
         
         <div class="options-group" style="text-align: left; gap: 1.5rem;">
         {% for secenek in soru.secenek_set.all %}
             <div class="option-label" style="display: flex; justify-content: space-between; cursor: default;">
-                <span class="option-text" style="color: #f8fafc;">{{ secenek.secenek_metni }}</span>
-                <span style="background: #A9BF3C; color: #00303F; font-weight: 700; padding: 0.25rem 1rem; border-radius: 20px;">
+                <span class="option-text" style="color: var(--text-primary);">{{ secenek.secenek_metni }}</span>
+                <span style="background: var(--color-primary); color: var(--bg-main); font-weight: 700; padding: 0.25rem 1rem; border-radius: 20px;">
                     {{ secenek.oylar }} Oy
                 </span>
             </div>
@@ -27,7 +27,7 @@
         </div>
 
         <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-            <a href="{% url 'anketin:index' %}" class="submit-vote-btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: #f8fafc; border: 1px solid rgba(255,255,255,0.2);">
+            <a href="{% url 'anketin:index' %}" class="submit-vote-btn" style="text-decoration: none; background: var(--border-glass); color: var(--text-primary); border: 1px solid rgba(255,255,255,0.2);">
                 Ana Sayfa
             </a>
             <a href="{% url 'anketin:grafikler' %}" class="submit-vote-btn" style="text-decoration: none;">

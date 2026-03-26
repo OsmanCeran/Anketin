@@ -32,47 +32,72 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Register the datalabels plugin
+        Chart.register(ChartDataLabels);
+
         const ctx = document.getElementById('pollChart').getContext('2d');
         
-        const labels = [
-            {% for secenek in soru.secenek_set.all %}
-                "{{ secenek.secenek_metni|escapejs }}"{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
-        
-        const data = [
-            {% for secenek in soru.secenek_set.all %}
-                {{ secenek.oylar }}{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
+        // Backend'dan (views.json_dumps) gelen serialize edilmiş veriler
+        const labels = {{ chart_labels_json|safe }};
+        const data = {{ chart_data_json|safe }};
 
-        // Temaya uygun renk paleti
+        // Temaya uygun, Yüksek Kontrastlı Renk Paleti (Mor Renk Yasak!)
         const backgroundColors = [
-            '#A9BF3C', '#64748b', '#cbd5e1', '#38bdf8', '#fbbf24', '#f87171'
+            '#06B6D4', // Cyber Cyan
+            '#F43F5E', // Neon Rose
+            '#EAB308', // Golden Amber
+            '#10B981', // Emerald Green
+            '#F97316', // Vivid Orange
+            '#3B82F6', // Solid Blue
+            '#84CC16', // Neon Yellow-Green
+            '#EC4899', // Bright Pink
+            '#0EA5E9', // Sky Blue
+            '#F59E0B'  // Deep Amber
         ];
 
         new Chart(ctx, {
-            type: 'doughnut', // 'pie' yerine 'doughnut' modern bir görünüm katar
+            type: 'pie', 
             data: {
                 labels: labels,
                 datasets: [{
                     data: data,
                     backgroundColor: backgroundColors,
-                    borderWidth: 0,
+                    borderWidth: 3,
+                    borderColor: '#020617', // Cyber Blue Theme Background
                     hoverOffset: 8
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
-                cutout: '60%', // Doughnut kalınlığı
                 plugins: {
+                    datalabels: {
+                        color: '#F8FAFC',
+                        font: {
+                            family: "'Outfit', sans-serif",
+                            weight: 'bold',
+                            size: 16
+                        },
+                        textShadowBlur: 8,
+                        textShadowColor: 'rgba(0,0,0,0.8)',
+                        formatter: (value, ctx) => {
+                            let sum = 0;
+                            let dataArr = ctx.chart.data.datasets[0].data;
+                            dataArr.map(val => {
+                                sum += val;
+                            });
+                            if (sum === 0 || value === 0) return ''; // Hide 0%
+                            let percentage = Math.round((value * 100 / sum)) + "%";
+                            return percentage;
+                        }
+                    },
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: '#cbd5e1',
+                            color: '#F8FAFC', // CSS değişkeni canvas'ta siyah çıkar, doğrudan beyaz HEX verildi
                             padding: 20,
                             font: {
                                 family: "'Outfit', sans-serif",
@@ -81,9 +106,10 @@
                         }
                     },
                     tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        backgroundColor: 'rgba(2, 6, 23, 0.95)',
+                        titleColor: '#06B6D4',
                         titleFont: { family: "'Outfit', sans-serif", size: 14 },
-                        bodyFont: { family: "'Outfit', sans-serif", size: 14 },
+                        bodyFont: { family: "'Outfit', sans-serif", size: 15 },
                         padding: 12,
                         cornerRadius: 8,
                         callbacks: {

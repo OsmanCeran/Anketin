@@ -1,0 +1,38 @@
+{% extends 'anketin/base.html' %}
+
+{% block title %}Çıkış Başarılı | Anketin{% endblock %}
+
+{% block content %}
+<!-- Dinamik Meta Yönlendirmesi -->
+<meta http-equiv="refresh" content="4;url=/" />
+
+<div class="landing-wrapper fade-in" style="min-height: 70vh;">
+    <div class="landing-content" style="max-width: 450px; padding: 4rem 3rem;">
+        
+        <!-- Yalnızca Lime (var(--color-primary)) ve Emerald (var(--color-success)) Renkler (Mor Kesinlikle Yok) -->
+        <div class="icon-pulse-effect" style="margin-bottom: 2rem; width: 90px; height: 90px; background: rgba(6, 182, 212, 0.1);">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 40px; height: 40px;">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+        </div>
+
+        <h1 style="color: var(--text-primary); font-size: 1.8rem; margin-bottom: 1rem;">Çıkış Başarılı</h1>
+        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2.5rem; line-height: 1.6;">
+            Görüşmek üzere, <strong>{{ username }}</strong>! <br> 
+            <span style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem; display: block;">4 saniye içinde anasayfaya yönlendiriliyorsunuz...</span>
+        </p>
+
+        <div style="display: flex; gap: 1rem; width: 100%; flex-direction: column;">
+            <a href="/" class="submit-vote-btn" style="text-decoration: none; padding: 0.8rem; font-size: 1rem;">
+                Ana Sayfa'ya Dön
+            </a>
+            <a href="{% url 'anketin:login' %}" class="outline-btn" style="text-decoration: none; padding: 0.8rem; font-size: 1rem; color: var(--text-secondary); border-color: rgba(255,255,255,0.2);">
+                Tekrar Giriş Yap
+            </a>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

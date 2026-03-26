@@ -10,7 +10,7 @@
     <style>
         /* Fallback cache-breaker for strict browsers */
         svg { max-width: 80px; }
-        body { background-color: #00303F; }
+        body { background-color: var(--bg-main); }
     </style>
 </head>
 <body>
@@ -33,7 +33,15 @@
                 <a href="{% url 'anketin:index' %}">Anasayfa</a>
                 <a href="{% url 'anketin:anketler' %}">Anketler</a>
                 <a href="{% url 'anketin:grafikler' %}">Grafikler</a>
-                <a href="{% url 'anketin:anket_ekle' %}" style="color: #A9BF3C; font-weight: 600;">+ Anket Ekle</a>
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'anketin:anket_ekle' %}" style="color: var(--color-primary); font-weight: 600;">+ Anket Ekle</a>
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                        <a href="/admin/" style="color: var(--color-danger); font-weight: 600;">Admin Paneli</a>
+                    {% endif %}
+                    <a href="{% url 'anketin:dashboard' %}" style="color: var(--color-success); font-weight: 600;">Profilim</a>
+                {% else %}
+                    <a href="{% url 'anketin:login' %}" style="color: #60A5FA; font-weight: 600;">Giriş Yap</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -42,6 +50,21 @@
     <main class="main-container">
         {% block content %}{% endblock %}
     </main>
+
+    <!-- ALT BİLGİ / FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#">Hakkımızda</a>
+                <a href="#">İletişim</a>
+                <a href="#">Gizlilik Politikası</a>
+                <a href="#">Kullanım Şartları</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 Anketin. Tüm hakları saklıdır.
+            </div>
+        </div>
+    </footer>
 
     {% block extra_scripts %}{% endblock %}
 </body>

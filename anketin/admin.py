@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Secenek, Soru
+from .models import Secenek, Soru, KullaniciProfili
 
 class SecenekInline(admin.TabularInline):
     model = Secenek
@@ -17,3 +17,8 @@ class SoruAdmin(admin.ModelAdmin):
     search_fields = ["soru_metni"]
 
 admin.site.register(Soru, SoruAdmin)
+
+@admin.register(KullaniciProfili)
+class KullaniciProfiliAdmin(admin.ModelAdmin):
+    list_display = ("user", "dogum_tarihi")
+    search_fields = ("user__username", "bio")

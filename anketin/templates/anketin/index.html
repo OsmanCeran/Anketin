@@ -5,7 +5,7 @@
     <div id="landing-section" class="landing-wrapper">
         <div class="landing-content">
             <div class="icon-pulse-effect" style="margin-bottom: 2rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#A9BF3C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     <line x1="9" y1="9" x2="15" y2="9"></line>
                     <line x1="9" y1="13" x2="15" y2="13"></line>
@@ -16,7 +16,7 @@
             <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: center; flex-wrap: wrap;">
                 <a href="{% url 'anketin:anketler' %}" class="submit-vote-btn" style="width: auto; padding: 1rem 2.5rem; display: inline-flex; text-decoration: none;">
                     Anketleri Görüntüle
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#00303F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--bg-main)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>
                     </svg>
@@ -62,16 +62,16 @@
     <section id="kategoriler" class="page-section">
         <div class="section-header">
             <h2>Kategoriler</h2>
-            <p>İlginizi çeken alanlardaki popüler konuları keşfedin (Çok Yakında!).</p>
+            <p>İlginizi çeken alanlardaki popüler konuları keşfedin.</p>
         </div>
         <div class="category-badges">
-            <span class="category-badge">⚽ Spor</span>
-            <span class="category-badge">💻 Teknoloji</span>
-            <span class="category-badge">📈 Finans</span>
-            <span class="category-badge">🎮 Oyun</span>
-            <span class="category-badge">📰 Gündem</span>
-            <span class="category-badge">🎵 Müzik</span>
-            <span class="category-badge">🎬 Sinema</span>
+            <a href="{% url 'anketin:anketler' %}#kategori-spor" class="category-badge" style="text-decoration: none; color: inherit;">⚽ Spor</a>
+            <a href="{% url 'anketin:anketler' %}#kategori-teknoloji" class="category-badge" style="text-decoration: none; color: inherit;">💻 Teknoloji</a>
+            <a href="{% url 'anketin:anketler' %}#kategori-finans" class="category-badge" style="text-decoration: none; color: inherit;">📈 Finans</a>
+            <a href="{% url 'anketin:anketler' %}#kategori-oyun" class="category-badge" style="text-decoration: none; color: inherit;">🎮 Oyun</a>
+            <a href="{% url 'anketin:anketler' %}#kategori-gundem" class="category-badge" style="text-decoration: none; color: inherit;">📰 Gündem</a>
+            <a href="{% url 'anketin:anketler' %}#kategori-muzik" class="category-badge" style="text-decoration: none; color: inherit;">🎵 Müzik</a>
+            <a href="{% url 'anketin:anketler' %}#kategori-sinema" class="category-badge" style="text-decoration: none; color: inherit;">🎬 Sinema</a>
         </div>
     </section>
 
@@ -86,7 +86,7 @@
             {% for soru in trend_sorular %}
             <a href="/anketin/{{ soru.id }}/" class="poll-card trend-card">
                 <div class="poll-card-content">
-                    <div class="poll-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                    <div class="poll-icon" style="background: var(--color-danger), 0.1); color: var(--color-danger);">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
                             <polyline points="17 6 23 6 23 12"></polyline>
